@@ -90,3 +90,15 @@ print('multiple filters use the numpy logical_and etc methods to concatenate')
 medium = cars[np.logical_and(cars['cars_per_cap'] >=100, cars['cars_per_cap'] <=500)]
 # Print medium
 print(medium)
+
+print('ITERATE OVER Data frame - each row_data is a panda Series')
+# Iterate over rows of cars
+for row_lable, row_data in cars.iterrows():
+    print(row_lable)
+    print(row_data)
+    print(row_data['country'] + ': ' + str(row_data['cars_per_cap']))
+
+print(' use APPLY method to run the same method on every item in a column')
+# Use .apply(str.upper)
+cars['COUNTRY'] = cars['country'].apply(str.upper)
+print(cars)
