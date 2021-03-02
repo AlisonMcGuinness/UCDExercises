@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Read & print the first 3 lines
 print('reading from a text file')
@@ -30,15 +31,15 @@ print('note lots of paremeters to specify rows/cols etc.')
 
 print('data must all be of same type or convertable to one type')
 print('example here to set the type when importing')
-'''
-file = 'seaslug.txt'
+
+file = 'seaslug.csv'
 # Import file: data
-data = np.loadtxt(file, delimiter='\t', dtype=str)
+data = np.loadtxt(file, delimiter=',', dtype=str)
 # Print the first element of data
 print(data[0])
 # this is header row with 2 strings
 # Import data as floats and skip the first row: data_float
-data_float = np.loadtxt(file, delimiter='\t', dtype=float, skiprows=1)
+data_float = np.loadtxt(file, delimiter=',', dtype=float, skiprows=1)
 # Print the 10th element of data_float
 print(data_float[9])
 # this will be data row with 2 floats
@@ -48,7 +49,7 @@ plt.scatter(data_float[:, 0], data_float[:, 1])
 plt.xlabel('time (min.)')
 plt.ylabel('percentage of larvae')
 plt.show()
-'''
+
 print('')
 print('')
 print('MIXED DATA TYPES - use np.genfromtxt')
@@ -112,9 +113,11 @@ print('their names were')
 print(data[survived]['Name'])
 
 # Plot 'Age' variable in a histogram
-'''
+print('plot the age in a histogram')
+print(type(data['Age']))
+print('use the [[]]] to get a DataFrame')
+print(type(data[['Age']]))
 pd.DataFrame.hist(data[['Age']])
 plt.xlabel('Age (years)')
 plt.ylabel('count')
 plt.show()
-'''
