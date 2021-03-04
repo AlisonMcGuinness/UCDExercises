@@ -45,10 +45,12 @@ print(data_float[9])
 # this will be data row with 2 floats
 
 # Plot a scatterplot of the data
+'''
 plt.scatter(data_float[:, 0], data_float[:, 1])
 plt.xlabel('time (min.)')
 plt.ylabel('percentage of larvae')
 plt.show()
+'''
 
 print('')
 print('')
@@ -62,10 +64,10 @@ There is another function, np.genfromtxt(), which can handle such structures. If
 
 Import 'titanic.csv' using the function np.genfromtxt() as follows:
 '''
-print('')
-print('titanic into np one d array')
-print('cannot get this to work and do not really see the point of it - it creates a list of tuples?')
-#data = np.genfromtxt('titanic.tsv', delimiter=',', names=True, dtype=None)
+#print('')
+#print('titanic into np one d array')
+#print('cannot get this to work and do not really see the point of it - it creates a list of tuples?')
+##data = np.genfromtxt('titanic.tsv', delimiter=',', names=True, dtype=None)
 
 #print(data[0])
 
@@ -117,7 +119,152 @@ print('plot the age in a histogram')
 print(type(data['Age']))
 print('use the [[]]] to get a DataFrame')
 print(type(data[['Age']]))
+'''
 pd.DataFrame.hist(data[['Age']])
 plt.xlabel('Age (years)')
 plt.ylabel('count')
 plt.show()
+'''
+
+print('')
+print('PICKLED example don''t have a file but this is code to read a pickle file')
+'''
+import pickle
+# Open pickle file and load data: d
+with open('data.pkl', 'rb') as file:
+    d = pickle.load(file)
+# Print d
+print(d)
+# Print datatype of d
+print(type(d))
+'''
+
+print('')
+print('EXCEL')
+'''
+Notes about excel
+The main difference between XLS and XLSX is that XLS files use a proprietary binary 
+format whereas, XLSX use a newer file format known as Open XML.
+I saved google doc as XLSX and tryed to read it. 
+IT told me to install xlrd but then said that xlrd could only read XLS files.
+so then it told me to install openpyxl instead which I did
+and then it seem to kind of work!! 
+Note I installed things from File, Settings, PRoject Interpreter just click the Plus button
+to add and then search for package and install. Very easy
+
+'''
+
+# Import pandas
+# Assign spreadsheet filename: file
+file = 'battledeath.xlsx'
+
+print('load spread sheet using pd.ExcelFile()')
+# Load spreadsheet: xls
+xls = pd.ExcelFile(file)
+
+# Print sheet names
+print('get the sheet names')
+print(xls.sheet_names)
+print('Load a sheet into a DataFrame using parse by name or by index')
+df1 = xls.parse('2004')
+# Print the head of the DataFrame df1
+print(df1.head())
+# Load a sheet into a DataFrame by index: df2
+df2 = xls.parse(0)
+# Print the head of the DataFrame df2
+print(df2.head())
+print('customising import  - skip rows, select columns, rename ')
+print('these are all parameters to PARSE')
+# Parse the first sheet and rename the columns: df1
+df1 = xls.parse(0, skiprows=[0], names=['Country','AAM due to War (2002)'])
+# Print the head of the DataFrame df1
+print(df1.head())
+# Parse the first column of the second sheet and rename the column: df2
+df2 = xls.parse(1, usecols=[0], skiprows=[0], names=['Country'])
+# Print the head of the DataFrame df2
+print(df2.head())
+
+
+print('')
+print('SAS Example')
+print(' have no sas file but this is code to import to pandas data frame')
+'''
+# Import sas7bdat package
+from sas7bdat import SAS7BDAT
+# Save file to a DataFrame: df_sas
+with SAS7BDAT('sales.sas7bdat') as file:
+    df_sas = file.to_data_frame()
+# Print head of DataFrame
+print(df_sas.head())
+# Plot histogram of DataFrame features (pandas and pyplot already imported)
+pd.DataFrame.hist(df_sas[['P']])
+plt.ylabel('count')
+plt.show()
+'''
+
+print('')
+print('STATA FILES')
+print('no stat file but here is code to import to data frame')
+
+'''
+# Load Stata file into a pandas DataFrame: df
+df  = pd.read_stata('disarea.dta')
+# Print the head of the DataFrame df
+print(df.head())'''
+
+
+print('')
+print('HDF5 files')
+import h5py
+filename = 'H-H1_LOSC_4_V1-1126259446-32.hdf5'
+# Load file: data
+data = h5py.File(file, 'r')
+# Print the datatype of the loaded file
+print(type(data))
+# Print the keys of the file
+for key in data.keys():
+    print(key)
+
+'''
+there are 3 main keys
+meta
+quality
+strain
+each of this is a ldf5 Group and also has keys()
+can drill down to get the actual data out of ['strain']['Strain'].value
+
+'''
+print(' CODE TO DRILL DOWN TOGET actuall data into numpy array?')
+'''
+# Get the HDF5 group: group
+group = data['strain']
+# Check out keys of group
+for key in group.keys():
+    print(key)
+# Set variable equal to time series data: strain
+strain = data['strain']['Strain'].value
+print(type(strain))  # <numpy.ndarray> in the eample anyway
+print(strain.shape)
+'''
+
+print('')
+print('MATLAB')
+print('have no matlab file but example code here')
+'''
+import scipy.io
+# Load MATLAB file: mat
+mat = scipy.io.loadmat('albeck_gene_expression.mat')
+# Print the datatype type of mat
+print(type(mat))  # it is a dictionary
+# the keys are the variable names
+# the values are the objects assigned to the variables
+print(mat.keys())
+
+# Print the type of the value corresponding to the key 'CYratioCyt'
+print(type(mat['CYratioCyt']))  # it is a numpy array
+
+# Print the shape of the value corresponding to the key 'CYratioCyt'
+print(mat['CYratioCyt'].shape)
+
+
+'''
