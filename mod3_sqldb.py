@@ -4,8 +4,10 @@ from sqlalchemy import create_engine
 print('how to query SQLITE db!')
 
 print(' 1. create database engine ')
-print('(Note this does not work if you put chinook.db in the project workspace')
+print('(Note this does not work if you put chinook.db in the project workspace??')
 print('But is fine if you open it from c:\sqlite folder')
+print(' I THINK this was beause I need to run pycharm as Administrator')
+print('- you need to have read/write access to be able to open the db')
 print('')
 
 engine = create_engine('sqlite:///c:\sqlite\chinook.db')
