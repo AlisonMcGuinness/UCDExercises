@@ -8,9 +8,10 @@ print('(Note this does not work if you put chinook.db in the project workspace??
 print('But is fine if you open it from c:\sqlite folder')
 print(' I THINK this was because I need to run pycharm as Administrator')
 print('- you need to have read/write access to be able to open the db')
+print(' also working folder on run configuration was wrong!')
 print('')
-# engine = create_engine('sqlite:///chinook.db')
-engine = create_engine('sqlite:///c:\sqlite\chinook.db')
+engine = create_engine('sqlite:///data//chinook.db')
+# engine = create_engine('sqlite:///c:\sqlite\chinook.db')
 
 
 print('2. Get a connection to the database engine')

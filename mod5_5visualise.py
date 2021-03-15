@@ -2,8 +2,15 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 # file = "C:\\Users\\Admin\\Documents\\UCD_Data\\avocado.csv"
-file = "C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\avocados.csv"
-avocados = pd.read_csv(file, sep=',', comment='#', na_values=['Nothing'])
+# file = "C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\avocados.csv"
+
+
+file="data\\avoplotto.pkl"
+#avocados = pd.read_csv(file, sep=',')
+import pickle
+# Open pickle file and load data: d
+with open(file, 'rb') as file:
+    avocados = pickle.load(file)
 
 print('')
 print('BAR GRAPH FROM PANDAS DATASET')

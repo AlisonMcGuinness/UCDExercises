@@ -1,8 +1,8 @@
 # Import cars data
 import pandas as pd
 import numpy as np
-dir = 'C:\\Users\\Admin\\PycharmProjects\\UCDExercises'
-file = 'cars.csv'
+# dir = 'C:\\Users\\Admin\\PycharmProjects\\UCDExercises'
+file = 'data\\cars.csv'
 cars = pd.read_csv(file, index_col=0)
 
 # cars is a Pandas Data Frame
@@ -103,3 +103,30 @@ print(' use APPLY method to run the same method on every item in a column')
 cars['COUNTRY'] = cars['country'].apply(str.upper)
 print(cars)
 print(cars)
+
+print('create data frame from list of dicts')
+# Create a list of dictionaries with new data
+avocados_list = [
+    {"date": "2019-11-03", "small_sold": 10376832, "large_sold": 7835071},
+      {"date": "2019-11-10", "small_sold": 10717154, "large_sold": 8561348}
+]
+
+# Convert list into DataFrame
+avocados_2019 = pd.DataFrame(avocados_list)
+
+# Print the new DataFrame
+print(avocados_2019)
+
+print('make data frame from dict of lists')
+# Create a dictionary of lists with new data
+avocados_dict = {
+  "date": ["2019-11-17", "2019-12-01"],
+  "small_sold": [10859987, 9291631],
+  "large_sold": [7674135, 6238096]
+}
+
+# Convert dictionary into DataFrame
+avocados_2019 = pd.DataFrame(avocados_dict)
+
+# Print the new DataFrame
+print(avocados_2019)
