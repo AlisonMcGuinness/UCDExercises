@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 
 
-# file = "stores.tsv"
+file = "data\\stores.tsv"
 # file = "C:\\Users\\Admin\\Documents\\UCD_Data\\stores.tsv"
-file = "C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\stores.tsv"
+# file = "C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\stores.tsv"
 sales = pd.read_csv(file, sep='\t', comment='#', na_values=['Nothing'])
 # Print the first element of data
 '''

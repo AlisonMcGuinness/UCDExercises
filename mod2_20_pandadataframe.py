@@ -2,8 +2,8 @@
 import pandas as pd
 import numpy as np
 dir = 'C:\\Users\\Admin\\PycharmProjects\\UCDExercises'
-file = ''
-cars = pd.read_csv(dir + '\\cars.csv', index_col=0)
+file = 'cars.csv'
+cars = pd.read_csv(file, index_col=0)
 
 # cars is a Pandas Data Frame
 print(cars)
