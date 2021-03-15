@@ -46,7 +46,7 @@ print('range is diveded into bins and graph shows how many results are in each b
 print(' Too few bins will oversimplify reality and won''t show you the details. ')
 print('prToo many bins will overcomplicate reality and won''t show the bigger picture.')
 plt.clf()
-plt.hist(life_exp, bins=10)
+plt(life_exp, bins=10)
 
 print('customisations!!')
 print('lables for x and y')

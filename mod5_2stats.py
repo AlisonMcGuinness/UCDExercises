@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 
 
-file = "stores.tsv"
+# file = "stores.tsv"
 # file = "C:\\Users\\Admin\\Documents\\UCD_Data\\stores.tsv"
+file = "C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\stores.tsv"
 sales = pd.read_csv(file, sep='\t', comment='#', na_values=['Nothing'])
 # Print the first element of data
 '''
@@ -158,8 +159,8 @@ print('')
 print('PIVOT TABLE')
 print('pivot_table method')
 print('values = column to summarise')
-print('index = column to group by')
-print('columns = extra column to group by')
+print('index = column to group by and display in ros')
+print('columns = extra column to group by and display in columns')
 print('aggfunc = function or list of functions to apply to data (default is mean)')
 print('margins = True will include summary row and column with mean of each row and columns')
 # Pivot for mean weekly_sales for each store type

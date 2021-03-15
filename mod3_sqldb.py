@@ -9,8 +9,8 @@ print('But is fine if you open it from c:\sqlite folder')
 print(' I THINK this was because I need to run pycharm as Administrator')
 print('- you need to have read/write access to be able to open the db')
 print('')
-engine = create_engine('sqlite:///chinook.db')
-#engine = create_engine('sqlite:///c:\sqlite\chinook.db')
+# engine = create_engine('sqlite:///chinook.db')
+engine = create_engine('sqlite:///c:\sqlite\chinook.db')
 
 
 print('2. Get a connection to the database engine')
