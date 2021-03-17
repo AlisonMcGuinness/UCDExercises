@@ -201,3 +201,106 @@ titles_diff = orig_seq[['title_org','title_seq','diff']]
 
 # Print the first rows of the sorted titles_diff
 print(titles_diff.sort_values("diff", ascending=False).head())
+
+
+print('')
+print(' semi join')
+'''
+
+ You have a sense of the steps in this technique. 
+ It first merges the tables, then searches it for which rows belong in the final result creating a filter 
+ and subsets the left table with that filter.
+ 
+ n this exercise, you replicated a semi-join to filter the table of tracks 
+ by the table of invoice items to find the top revenue non-musical tracks. 
+ With some additional data manipulation, you discovered that 'TV-shows' is the 
+ non-musical genre that has the most top revenue-generating tracks. 
+
+  '''
+
+# Merge the non_mus_tck and top_invoices tables on tid
+tracks_invoices = non_mus_tcks.merge(top_invoices, on="tid")
+
+# Use .isin() to subset non_mus_tcks to rows with tid in tracks_invoices
+top_tracks = non_mus_tcks[non_mus_tcks['tid'].isin(tracks_invoices['tid'])]
+
+# Group the top_tracks by gid and count the tid rows
+cnt_by_gid = top_tracks.groupby(['gid'], as_index=False).agg({'tid':'count'})
+
+# Merge the genres table to cnt_by_gid on gid and print
+print(genres.merge(cnt_by_gid, on="gid"))
+
+print('')
+print('anti join')
+'''
+eg find employees who are NOT assigned to a customer
+indicator = True will add a _merge column to the result that tells you
+if the values were in both or left_only
+
+this all seems very convulted, must be a better way??
+'''
+
+# Merge employees and top_cust
+empl_cust = employees.merge(top_cust, on='srid',
+                                 how='left', indicator=True)
+
+# Select the srid column where _merge is left_only
+# this is a list of the employee ids that have NO match in customer
+srid_list = empl_cust.loc[empl_cust['_merge'] == 'left_only', 'srid']
+
+# Get employees not working with top customers
+# subset JSUT the  employee data base on that list.
+print(employees[employees["srid"].isin(srid_list)])
+'''
+You performed an anti-join by first merging the tables with a left join, 
+selecting the ID of those employees who did not support a top customer, 
+and then subsetting the original employee's table. 
+From that, we can see that there are five employees not supporting top customers. 
+Anti-joins are a powerful tool to filter a main table (i.e. employees) 
+by another (i.e. customers).
+
+'''
+print('')
+print('CONCATENATE (vertical)')
+# Concatenate the tracks, show only columns names that are in all tables
+# default is Vertial, set axis = 1 for horizontal?
+# sort True means sort the columns in alpha betical
+# join inner means only columns tat are common to all tables are included.
+tracks_from_albums = pd.concat([tracks_master, tracks_ride, tracks_st],
+                               join="inner",
+                               ignore_index=True,
+                               sort=True)
+print(tracks_from_albums)
+'''
+There are many ways to write code for this task. 
+However, concatenating the tables with a key provides a hierarchical 
+index that can be used for grouping. 
+Once grouped, you can average the groups and create plots. 
+You were able to find out that September had the highest average invoice total.
+'''
+# Concatenate the tables and add keys (which become the index col)
+inv_jul_thr_sep = pd.concat([inv_jul, inv_aug, inv_sep],
+                            keys=['7Jul', '8Aug', '9Sep'])
+
+# Group the invoices by the index keys and find avg of the total column
+# gropu by(lvel=0) means group by the 0 level which is the index?
+avg_inv_by_month = inv_jul_thr_sep.groupby(level=0).agg({'total':'mean'})
+
+# Bar plot of avg_inv_by_month
+avg_inv_by_month.plot(kind="bar")
+plt.show()
+
+print('')
+print('append')
+print(' append is simpler but less flexible than concat')
+# Use the .append() method to combine the tracks tables
+metallica_tracks = tracks_ride.append([tracks_master, tracks_st], sort=False)
+
+# Merge metallica_tracks and invoice_items
+tracks_invoices = metallica_tracks.merge(invoice_items, on="tid")
+
+# For each tid and name sum the quantity sold
+tracks_sold = tracks_invoices.groupby(['tid','name']).agg({'quantity':'sum'})
+
+# Sort in decending order by quantity and print the results
+print(tracks_sold.sort_values('quantity', ascending=False))
