@@ -1,7 +1,7 @@
 # Import cars data
 import pandas as pd
 import numpy as np
-# dir = 'C:\\Users\\Admin\\PycharmProjects\\UCDExercises'
+file  = 'C:\\Users\\Admin\\PycharmProjects\\UCDExercises\\cars.csv'
 file = 'data\\cars.csv'
 cars = pd.read_csv(file, index_col=0)
 

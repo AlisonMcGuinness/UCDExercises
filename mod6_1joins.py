@@ -1,6 +1,12 @@
 import pandas as pd
 
+def load_p_file(filename):
+    return pd.read_pickle(filename)
 
+
+
+taxi_owners = load_p_file('data\\taxi_owners.p')
+taxi_veh = load_p_file('data\\taxi_vehicles.p')
 
 print('' )
 print('INNER JOIN with merge() method')
@@ -8,6 +14,7 @@ print('INNER JOIN with merge() method')
 taxi_own_veh = taxi_owners.merge(taxi_veh, on='vid', suffixes=('_own','_veh'))
 # Print the value_counts to find the most popular fuel_type
 print(taxi_own_veh['fuel_type'].value_counts())
+
 
 '''
 NOTE tha merge() only returns row where there is a mathcing value in both dataframes
@@ -19,11 +26,15 @@ print(' one to many join')
 print('exact same syntax')
 # Merge the licenses and biz_owners table on account
 # license can have multiple owners
+licenses = load_p_file('data\\licenses.p')
+biz_owners = load_p_file('data\\business_owners.p')
+
 licenses_owners = licenses.merge(biz_owners, on="account")
 print(licenses_owners.groupby("title"))
 # Group the results by title then count the number of accounts
 counted_df = licenses_owners.groupby("title").agg({'account':'count'})
 # Sort the counted_df in descending order
+print(counted_df)
 sorted_df = counted_df.sort_values("account", ascending = False)
 
 # Use .head() method to print the first few rows of sorted_df
@@ -31,12 +42,15 @@ print(sorted_df.head())
 
 
 print('')
-print('multiple joins - just concategnate')
+print('multiple joins - just concatenate')
 '''
 ridership is station id, date, num rides
 cal is date, and type
 stations is station id and station name
 '''
+ridership = load_p_file('data\\cta_ridership.p')
+stations = load_p_file('data\\stations.p')
+cal = load_p_file('data\\cta_calendar.p')
 # Merge the ridership, cal, and stations tables
 ridership_cal_stations = ridership.merge(cal, on=['year','month','day']) \
 							.merge(stations, on='station_id')
@@ -53,6 +67,8 @@ print('')
 print('LEFT JOIN - will include ALL rows in the left table and matching rows if they exist. NaN values if no match')
 print('count missing values in the right table by doing left join then counting which rows have Nan')
 # Merge the movies table with the financials table with a left join
+movies = load_p_file('data\\movies.p')
+financials = load_p_file('data\\financials.p')
 movies_financials = movies.merge(financials, on='id', how='left')
 # Count the number of rows in the budget column that are missing
 # the data camp exercise said sum() instead of count()  I don't understand this
@@ -88,19 +104,36 @@ Your goal is to enrich this data by adding the marketing tag line for each movie
 You will compare the results of a left join versus an inner join.
 
 '''
+movies = load_p_file('data\\movies.p')
+# trying to filter out JUST the toy story rows - can't get it to work in one line
 
+#toy_story = movies['Toy' in movies['title']]
+#toy_story = movies.query("title == 'Toy Story'")
+# back to basics, create the filter list by looping through
+toy = []
+for row_lable, row_data in movies.iterrows():
+    toy.append(True if 'Toy' in row_data['title'] else False)
+
+toy_story = movies[toy]
+print(toy_story.head())
+
+
+taglines = load_p_file('data\\taglines.p')
 # Merge the toy_story and taglines tables with a left join
 toystory_tag = toy_story.merge(taglines, how="left")
 
 # Print the rows and shape of toystory_tag
+print('LEFT JOIN - all 3 movies are there with one blank tagline')
 print(toystory_tag)
-print(toystory_tag.shape)
+#print(toystory_tag.shape)
+
 
 # Merge the toy_story and taglines tables with a inner join
 toystory_tag = toy_story.merge(taglines)
 # Print the rows and shape of toystory_tag
+print('INNER JOIN - only the 2 movies with matching taglines are there')
 print(toystory_tag)
-print(toystory_tag.shape)
+#print(toystory_tag.shape)
 '''
 If your goal is to enhance or enrich a dataset, then you do not want to lose any of your original data. 
 A left join will do that by returning all of the rows of your left table, while using an inner join 
@@ -116,13 +149,13 @@ With this, you were able to find the rows not found in the action_movies table.
 Additionally, you used the left_on and right_on arguments to merge in the movies table. 
 
 '''
+action_movies = load_p_file('data\\movie_to_genres.p')
 # Merge action_movies to the scifi_movies with right join
 action_scifi = action_movies.merge(scifi_movies, on='movie_id', how='right',
                                    suffixes=('_act','_sci'))
 
 # From action_scifi, select only the rows where the genre_act column is null
 scifi_only = action_scifi[action_scifi['genre_act'].isnull()]
-
 
 # Merge the movies and scifi_only tables with an inner join
 movies_and_scifi_only = movies.merge(scifi_only, left_on="id", right_on="movie_id")
@@ -135,7 +168,6 @@ print('')
 print('OUTEr JOIN')
 '''
 returns all rows from both with nulls here there is no match
-
 find all rows that are not in both
 '''
 # Merge iron_1_actors to iron_2_actors on id with outer join using suffixes
@@ -164,6 +196,7 @@ With the output, you can quickly see different movie directors and the
 people they worked with in the same movie.
 '''
 # Merge the crews table to itself
+crews = load_p_file('data\\crews.p')
 crews_self_merged = crews.merge(crews, on='id', how='inner',
                                 suffixes=('_dir','_crew'))
 
@@ -186,6 +219,7 @@ compared to the original movie.
 
 '''
 # Merge sequels and financials on index id
+sequels = load_p_file('data\\sequels.p')
 sequels_fin = sequels.merge(financials, on='id', how='left')
 
 # Self merge with suffixes as inner join with left on sequel and right on id
@@ -217,7 +251,7 @@ print(' semi join')
  non-musical genre that has the most top revenue-generating tracks. 
 
   '''
-
+non_mus_tcks = load_p_file('data\\??')
 # Merge the non_mus_tck and top_invoices tables on tid
 tracks_invoices = non_mus_tcks.merge(top_invoices, on="tid")
 
@@ -241,6 +275,7 @@ this all seems very convulted, must be a better way??
 '''
 
 # Merge employees and top_cust
+employees = load_p_file('data\\')
 empl_cust = employees.merge(top_cust, on='srid',
                                  how='left', indicator=True)
 
@@ -266,6 +301,7 @@ print('CONCATENATE (vertical)')
 # default is Vertial, set axis = 1 for horizontal?
 # sort True means sort the columns in alpha betical
 # join inner means only columns tat are common to all tables are included.
+# ignore_index set to True means ignore any existing index and reset indices to 0 .... n-1
 tracks_from_albums = pd.concat([tracks_master, tracks_ride, tracks_st],
                                join="inner",
                                ignore_index=True,
@@ -304,3 +340,34 @@ tracks_sold = tracks_invoices.groupby(['tid','name']).agg({'quantity':'sum'})
 
 # Sort in decending order by quantity and print the results
 print(tracks_sold.sort_values('quantity', ascending=False))
+
+print('')
+print('VALIDATE merges')
+'''
+pass in validate="one_to_one" or "one_to_many" etc to the merge() method
+and it will throw an error if the data does not match up with what 
+is expeced.
+eg if you validate="one_to_one" then the merge will throw an error if there
+are duplicates in either table.
+
+'''
+'''
+another example tht I don't really understand and have no data for.
+# Concatenate the classic tables vertically
+classic_18_19 = pd.concat([classic_18, classic_19], ignore_index=True)
+
+# Concatenate the pop tables vertically
+pop_18_19 = pd.concat([pop_18, pop_19], ignore_index=True)
+
+# Merge classic_18_19 with pop_18_19
+classic_pop = classic_18_19.merge(pop_18_19, on="tid")
+
+# Using .isin(), filter classic_18_19 rows where tid is in classic_pop
+popular_classic = classic_18_19[classic_18_19["tid"].isin(classic_pop["tid"])]
+
+# Print popular chart
+print(popular_classic)
+'''
+
+
+
