@@ -2,7 +2,22 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+'''
+styles https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html
+https://matplotlib.org/stable/api/axes_api.html
+
+https://matplotlib.org/2.0.2/gallery.html
+
+https://matplotlib.org/stable/api/animation_api.html
+https://scitools.org.uk/cartopy/docs/latest/
+
+pandas + matplotlib = seaborn - even more sophisticated visualisations
+https://seaborn.pydata.org/examples/index.html
+'''
+
 # Create a Figure and an Axes with plt.subplots
+# Change Style before getting subplots!
+plt.style.use('ggplot')
 fig, ax = plt.subplots()
 
 # Call the show function to show the result
@@ -180,7 +195,7 @@ ax.bar(medals.index, medals['Silver'], bottom=medals['Gold'], label='Silver')
 # Stack bars for "Bronze" on top of that with label "Bronze"
 ax.bar(medals.index, medals['Bronze'], bottom = medals['Gold'] + medals['Silver'], label='Bronze')
 # Set the x-axis tick labels to the country names
-ax.set_xticklabels(medals.index, rotation=90)
+#ax.set_xticklabels(medals.index, rotation=90)
 
 # Set the y-axis label
 ax.set_ylabel('Number of medals')
@@ -197,6 +212,7 @@ use .hist(column of data, label='blah', bins=x, or bins= [x, y ,z], histtype='st
 the x axis will have the values in the variable (in bins) default 10 bins
 the y axis has the number of times each value appears in the column
 '''
+'''
 fig, ax = plt.subplots()
 
 # Plot a histogram of "Weight" for mens_rowing
@@ -210,7 +226,7 @@ ax.set_ylabel("# of observations")
 # Add the legend and show the Figure
 ax.legend()
 plt.show()
-
+'''
 
 
 print('Statistical plotting')
@@ -233,6 +249,8 @@ for example can see how many individuals are outliers in their group.
 or something - this is quite sophisticated stats and I don't get it
 can readon you tube/wikipedia if need to understand it.
 '''
+
+'''
 fig, ax = plt.subplots()
 
 # Add a boxplot for the "Height" column in the DataFrames
@@ -245,3 +263,87 @@ ax.set_xticklabels(['Rowing', 'Gymnastics'])
 ax.set_ylabel('Height (cm)')
 
 plt.show()
+''''''
+Note Standard Deviation is the average distance to the mean (roughly!)
+see you tube video.
+'''
+
+print('')
+print('SCATTER PLOTS')
+'''
+Bar charts are good to show 1 value across different conditons
+but if you want to compare values of 2 different variables across
+observations, then use a scatter plot (bi variant comparision)
+
+can encode a third variable as color using the 'c' parameter
+colors go from dark to light depending on var? good for time index??
+'''
+fig, ax = plt.subplots()
+
+# Add data: "co2" on x-axis, "relative_temp" on y-axis
+ax.scatter(climate_change['co2'], climate_change['relative_temp'], c=climate_change.index)
+
+# Set the x-axis label to "CO2 (ppm)"
+ax.set_xlabel('CO2 (ppm)')
+
+# Set the y-axis label to "Relative temperature (C)"
+ax.set_ylabel('Relative temperature (C)')
+
+plt.show()
+
+print(' SAVIGN FILES')
+
+print('use fig.savefig() to save in .png, .jpg, .svg')
+'''
+other parameters dpi=300 (dots per inhc, higher the better (and bigger)
+quality = 50 (between 1 AND 100, DON'T BOTHER over 95 not worth it)
+
+Also fig.set_size_inches([3, 5])  (width, height)
+presume you call that before you savefig.
+'''
+'''
+# Set figure dimensions and save as a PNG
+set size is throwing an error
+fig.set_size_inches([3,5])
+fig.savefig('figure_3_5.png')
+# Set figure dimensions and save as a PNG
+fig.set_size_inches([5,3])
+fig.savefig('figure_5_3.png')
+'''
+
+print('"Automating" figures from data')
+print('this just means writing code that generates graph from the data without knowing how many values or what type of values')
+'''
+eg if there is big df with multiple rows for each Sport, you can do a bar chart with mean/total for
+each sport without knowing how many sports there are or what they are called.
+
+ For example, if you receive data that has an unknown number of categories, 
+ you can still create a bar plot that has bars for each category.
+'''
+
+# Extract the "Sport" column
+summer_2016_medals = pd.read_csv('Data7\\summer2016.csv')
+sports_column = summer_2016_medals['Sport']
+print(sports_column)
+# Find the unique values of the "Sport" column
+sports = summer_2016_medals['Sport'].unique()
+
+# Print out the unique sports values
+print(sports)
+fig, ax = plt.subplots()
+
+# Loop over the different sports branches
+for sport in sports:
+  # Extract the rows only for this sport
+  sport_df = summer_2016_medals[summer_2016_medals['Sport'] == sport]
+  # Add a bar for the "Weight" mean with std y error bar
+  ax.bar(sport, sport_df['Weight'].mean(), yerr=sport_df['Weight'].std())
+
+
+ax.set_ylabel("Weight")
+ax.set_xticklabels(sports, rotation=90)
+
+plt.show()
+
+# Save the figure to file
+fig.savefig('sports_weights.png')
