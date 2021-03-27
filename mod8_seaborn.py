@@ -177,3 +177,57 @@ Cars from the USA tend to accelerate more quickly and get lower miles per gallon
 compared to cars from Europe and Japan.
 '''
 plt.show()
+print('')
+print('LINE PLOT')
+print(' line plot - each plot point represents the same "thing" - typically over time')
+'''
+so your x values should be time/date type data
+y values are what you are actually analysing
+can sub group the y values on onther data value by using that for style as before.
+
+if there are multiple observations for the same X then 
+the line plot will automatically aggragate the values into single summary value(default is MEAN)
+and there will be included a shared area which is the confidence interval
+you can change confidence interval to be std dev by setting ci="sd" or remove with ci=None
+'''
+# Create line plot
+sns.relplot(x='model_year', y='mpg', data=mpg, kind='line')
+
+# Show plot
+plt.show()
+
+# Make the shaded area show the standard deviation
+sns.relplot(x="model_year", y="mpg",
+            data=mpg, kind="line", ci="sd")
+
+# Show plot
+'''
+Unlike the plot in the last exercise, 
+this plot shows us the distribution of miles per gallon for all the cars in each year.
+DO@T UNDERSTAND THIS!
+'''
+plt.show()
+
+
+print('more examples')
+'''
+We've seen that the average miles per gallon for cars has increased over time, 
+but how has the average horsepower for cars changed over time? 
+And does this trend differ by country of origin?
+'''
+
+# Add markers and make each line have the same style
+sns.relplot(x="model_year", y="horsepower",
+            data=mpg, kind="line",
+            ci=None,
+            style="origin",hue="origin", # subroup data with separate lines for each origin
+            dashes=False, # keep solid lines for all (ie NOT different styles)
+            markers=True)  # show marker for each data point (differnet for each style)
+
+# Show plot
+'''
+Now that we've added subgroups, 
+we can see that this downward trend in horsepower 
+was more pronounced among cars from the USA.
+'''
+plt.show()
