@@ -114,6 +114,8 @@ print('')
 print(' RELATIONAL PLOTS')
 print(' relplot() method can be used to create any plot, just pass in kind="scatter" or "line" ')
 '''
+RELplot is a RELational plot!! - shows relationship between 2 quantative variables
+scatter and line are 2 types of Relational plot
 Because these subplots had a large range of x values, 
 it's easier to read them arranged in rows instead of columns.
 '''
