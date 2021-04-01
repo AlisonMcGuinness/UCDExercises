@@ -6,6 +6,7 @@ import numpy as np
 print('')
 print(' CAT PLOT')
 print('for plotting categorical values')
+https://www.anaconda.com/products/individual
 
 '''
 categorical values are those which have a fixed (usally small) number of values 
@@ -152,6 +153,10 @@ print('change plot style and colour')
 # Change the color palette to "RdBu"
 sns.set_style("whitegrid")  # also dark, darkgrid, ticks, white (default) and whitegrid
 sns.set_palette("RdBu")  # loads of diverting and sequential palettes availalbe see sheets also can customise
+
+
+# Remove the spines
+sns.despine(left=True, bottom=True)  # will remove left and bottom axes lines (lots of other parameters)
 
 # Set a custom color palette
 #sns.set_palette(["#39A7D0","#36ADA4"])
